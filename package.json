@@ -2,14 +2,27 @@
   "name": "api-domain-lookup",
   "version": "1.0.0",
   "description": "An Express API for DomainLookup",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "commit": "git-cz"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.1"
+    "@types/nodemon": "^1.19.6",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

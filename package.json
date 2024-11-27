@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "An Express API for DomainLookup",
   "type": "module",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "commit": "git-cz"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "commit": "git-cz",
+    "acp:dev": "git add . && npm run commit && git push origin dev"
   },
   "keywords": [],
   "author": "",

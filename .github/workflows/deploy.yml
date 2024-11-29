@@ -20,7 +20,6 @@ jobs:
           node-version: '22.x'
           cache: 'npm'
       - run: npm ci
-      - run: npm run build
 
       # Add SSH key
       - name: Add SSH key
@@ -31,10 +30,7 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      # Deploy files to the server
-      - name: Deploy to remote server
-        run: scp -r -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:www/${{ vars.DOMAIN }}/public_html
-
-      # Clear dynamic cache on SG
+      # Deploy files & clear dynamic cache
       - name: Clear dynamic cache
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p${{ secrets.SSH_PORT }} "site-tools-client domain update id=1 flush_cache=1"
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p${{ secrets.SSH_PORT }} "cd www/api-dl.nikola-nenovski.info/public_html && git pull origin main && npm i && site-tools-client domain update id=1 flush_cache=1"

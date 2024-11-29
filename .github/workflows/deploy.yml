@@ -1,0 +1,40 @@
+# This workflow does a clean installation of node dependencies, cache/restore them, deploy the files to Siteground and clear the dynamic cache
+
+name: build CI/CD pipeline
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+
+      # Add SSH key
+      - name: Add SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      # Deploy files to the server
+      - name: Deploy to remote server
+        run: scp -r -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:www/${{ vars.DOMAIN }}/public_html
+
+      # Clear dynamic cache on SG
+      - name: Clear dynamic cache
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p${{ secrets.SSH_PORT }} "site-tools-client domain update id=1 flush_cache=1"

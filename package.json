@@ -8,7 +8,8 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "commit": "git-cz",
-    "acp:dev": "git add . && npm run commit && git push origin dev"
+    "acp:dev": "git add . && npm run commit && git push origin dev",
+    "deploy:lambda": "zip -r $npm_config_name.zip . && aws lambda update-function-code --function-name v1 --zip-file fileb://$npm_config_name.zip"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +21,8 @@
     "axios": "^1.7.8",
     "cors": "^2.8.5",
     "express": "^4.21.1",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
     "cz-conventional-changelog": "^3.3.0"

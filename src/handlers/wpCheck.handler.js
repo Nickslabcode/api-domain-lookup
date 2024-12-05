@@ -1,21 +1,17 @@
-import axios from "axios";
-
 const wpCheckHandler = async (req, res) => {
   const domain = req.query.domain;
-
+  console.log(domain);
   if (!domain) {
     res.status(400).send("Domain query parameter is required!");
   }
 
   try {
     // wp-login.php
+    const wpLoginResponse = await fetch(`https://${domain}/wp-login.php`);
 
-    const wpLoginResponse = await axios.get(`https://${domain}/wp-login.php`, {
-      validateStatus: false,
-    });
-
-    if (wpLoginResponse.status === 200) {
-      const answer = wpLoginResponse.data.includes("wordpress");
+    if (wpLoginResponse.ok) {
+      const data = await wpLoginResponse.text();
+      const answer = data.includes("wordpress");
       if (answer) {
         return res
           .status(200)
@@ -23,13 +19,13 @@ const wpCheckHandler = async (req, res) => {
       }
     }
 
-    // readme.html check
-    const readmeResponse = await axios.get(`https://${domain}/readme.html`, {
-      validateStatus: false,
-    });
+    // readme
+    const readmeResponse = await fetch(`https://${domain}/readme.html`);
 
-    if (readmeResponse.status === 200) {
-      const answer = readmeResponse.data.includes("wordpress");
+    if (readmeResponse.ok) {
+      const data = await readmeResponse.text();
+      console.log(data);
+      const answer = data.includes("wordpress");
       if (answer) {
         return res
           .status(200)
@@ -37,19 +33,19 @@ const wpCheckHandler = async (req, res) => {
       }
     }
 
-    // wp-json check
-    const wpJsonResponse = await axios.get(`https://${domain}/wp-json`, {
-      validateStatus: false,
-    });
+    // wp-json
+    const wpJsonResponse = await fetch(`https://${domain}/wp-json`);
 
-    if (wpJsonResponse.status === 200) {
-      const answer = wpJsonResponse.data.includes("wordpress");
+    if (wpJsonResponse.ok) {
+      const data = await wpJsonResponse.text();
+      const answer = data.includes("wordpress");
       if (answer) {
         return res
           .status(200)
           .json({ wordpressInstalled: true, method: "wp-json" });
       }
     }
+
     res.status(200).json({ wordpressInstalled: false });
   } catch (error) {
     console.log(error);

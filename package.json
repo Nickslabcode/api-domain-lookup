@@ -9,7 +9,7 @@
     "dev": "nodemon src/app.js",
     "commit": "git-cz",
     "acp:dev": "git add . && npm run commit && git push origin dev",
-    "deploy:lambda": "zip -r $npm_config_name.zip . && aws lambda update-function-code --function-name v1 --zip-file fileb://$npm_config_name.zip"
+    "deploy:lambda": "zip -r express-lambda.zip . && aws lambda update-function-code --function-name v1 --zip-file fileb://express-lambda.zip && rm -rf express-lambda.zip"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,6 @@
     "@types/axios": "^0.14.4",
     "@types/cors": "^2.8.17",
     "@types/nodemon": "^1.19.6",
-    "axios": "^1.7.8",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "nodemon": "^3.1.7",

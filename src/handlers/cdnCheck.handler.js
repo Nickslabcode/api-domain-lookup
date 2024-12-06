@@ -48,7 +48,7 @@ const cdnCheckHandler = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .send("Internal server error. Please try again later", error);
+      .send("Internal server error. Please try again later");
   }
 };
 

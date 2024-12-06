@@ -11,4 +11,5 @@ app.get("/api/v1/wp-check", wpCheckHandler);
 
 app.get("/api/v1/cdn-check", cdnCheckHandler);
 
+app.get("/api/v1/whois", cdnCheckHandler);
 export default app;

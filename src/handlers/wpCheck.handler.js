@@ -59,7 +59,8 @@ const wpCheckHandler = async (req, res) => {
     res.status(200).json({ wordpressInstalled: false });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal server error. Please try again later");
+    res.status(500).json({message: "Internal server error. Please try again later", error});
+
   }
 };
 

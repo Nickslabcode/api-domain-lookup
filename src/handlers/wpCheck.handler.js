@@ -1,4 +1,4 @@
-import { requestHeaders } from "../common/requestHeaders";
+import { requestHeaders } from "../common/requestHeaders.js";
 
 const wpCheckHandler = async (req, res) => {
   const domain = req.query.domain;

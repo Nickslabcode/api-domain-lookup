@@ -1,0 +1,8 @@
+@api = https://api-dl.nikola-nenovski.info/api/v1
+
+### WP not installed
+GET {{api}}/wp-check?domain=nikola-nenovski.info
+
+### WP installed
+GET {{api}}/wp-check?domain=cexposurefilms.com
+GET {{api}}/wp-check?domain=mrtnbdrv.com

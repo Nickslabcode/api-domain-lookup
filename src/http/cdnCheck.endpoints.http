@@ -1,0 +1,9 @@
+@api = https://api-dl.nikola-nenovski.info/api/v1
+
+### SG CDN
+GET {{api}}/cdn-check?domain=nikola-nenovski.info
+
+GET {{api}}/cdn-check?domain=mrtnbdrv.com
+
+### No CDN
+GET {{api}}/cdn-check?domain=cexposurefilms.com

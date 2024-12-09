@@ -1,0 +1,7 @@
+@api = https://api-dl.nikola-nenovski.info/api/v1
+
+### .info active domain
+GET {{api}}/whois?domain=nikola-nenovski.info
+
+### .com active domain
+GET {{api}}/whois?domain=mrtnbdrv.com

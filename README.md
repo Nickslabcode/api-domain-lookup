@@ -1,6 +1,6 @@
 # Domain Lookup API  
 
-Domain Lookup API is a lightweight and serverless Express API designed for AWS Lambda with API Gateway. It provides essential tools for domain and website diagnostics, including WHOIS data retrieval, CDN detection, and WordPress installation checks.  
+A lightweight and serverless Express API designed for AWS Lambda with API Gateway, for the project [Domain Lookup](https://github.com/Nickslabcode/domain-info-lookup). It provides essential tools for domain and website diagnostics, including WHOIS data retrieval, CDN detection, and WordPress installation checks.  
 
 ## Features  
 

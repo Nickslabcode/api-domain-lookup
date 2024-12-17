@@ -1,10 +1,11 @@
-import { requestHeaders } from "../common/requestHeaders.js";
+import { requestHeaders } from '../common/requestHeaders.js';
+import { cdnHeadersMapping, CLOUDFRONT } from '../common/cdnHeadersMapping.js';
 
 const cdnCheckHandler = async (req, res) => {
   const domain = req.query.domain;
 
   if (!domain) {
-    return res.status(400).send("Domain query parameter is required!");
+    return res.status(400).send('Domain query parameter is required!');
   }
 
   const headers = requestHeaders(domain);
@@ -14,44 +15,29 @@ const cdnCheckHandler = async (req, res) => {
       headers,
     });
 
-    const getResponseHeader = (headerName) => response.headers.get(headerName);
+    const getResponseHeader = headerName => response.headers.get(headerName);
 
-    const cdnHeadersObject = {};
+    const cdnHeadersObject = Object.entries(cdnHeadersMapping).reduce(
+      (acc, [header, cdnKey]) => {
+        if (getResponseHeader(header)) {
+          acc[cdnKey] = true;
+        }
 
-    switch (true) {
-      case !!getResponseHeader("x-sg-cdn"):
-        cdnHeadersObject.siteGround = true;
+        return acc;
+      },
+      {}
+    );
 
-      case !!getResponseHeader("cf-cache-status"):
-        cdnHeadersObject.cloudFlare = true;
-
-      case !!getResponseHeader("x-bunny-cache"):
-        cdnHeadersObject.bunny = true;
-
-      case getResponseHeader("x-cache")?.includes("HIT from cloudFront"):
-        cdnHeadersObject.cloudFront = true;
-
-      case !!getResponseHeader("x-akamai-transformed"):
-        cdnHeadersObject.akamai = true;
-
-      case !!getResponseHeader("x-sp-cache-status"):
-        cdnHeadersObject.stackPath = true;
-
-      case !!getResponseHeader("x-azure-ref"):
-        cdnHeadersObject.azure = true;
-
-      default:
-        break;
+    if (getResponseHeader(CLOUDFRONT)?.includes('HIT from cloudFront')) {
+      cdnHeadersObject.cloudFront = true;
     }
 
     res.status(200).json(cdnHeadersObject);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Internal server error. Please try again later",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: 'Internal server error. Please try again later',
+      error: error.message,
+    });
   }
 };
 

@@ -32,7 +32,7 @@ const cdnCheckHandler = async (req, res) => {
       cdnHeadersObject.cloudFront = true;
     }
 
-    res.status(200).json(cdnHeadersObject);
+    res.status(200).json({ data: cdnHeadersObject });
   } catch (error) {
     res.status(500).json({
       message: 'Internal server error. Please try again later',

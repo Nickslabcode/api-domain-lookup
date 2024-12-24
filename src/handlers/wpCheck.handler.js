@@ -1,10 +1,10 @@
-import { requestHeaders } from "../common/requestHeaders.js";
+import { requestHeaders } from '../common/requestHeaders.js';
 
 const wpCheckHandler = async (req, res) => {
   const domain = req.query.domain;
   console.log(domain);
   if (!domain) {
-    res.status(400).send("Domain query parameter is required!");
+    res.status(400).send('Domain query parameter is required!');
   }
 
   const headers = requestHeaders(domain);
@@ -17,11 +17,11 @@ const wpCheckHandler = async (req, res) => {
 
     if (wpLoginResponse.ok) {
       const data = await wpLoginResponse.text();
-      const answer = data.includes("wordpress");
+      const answer = data.includes('wordpress');
       if (answer) {
         return res
           .status(200)
-          .json({ wordpressInstalled: true, method: "wp-login" });
+          .json({ data: { wordpressInstalled: true, method: 'wp-login' } });
       }
     }
 
@@ -33,11 +33,11 @@ const wpCheckHandler = async (req, res) => {
     if (readmeResponse.ok) {
       const data = await readmeResponse.text();
       console.log(data);
-      const answer = data.includes("wordpress");
+      const answer = data.includes('wordpress');
       if (answer) {
         return res
           .status(200)
-          .json({ wordpressInstalled: true, method: "readme" });
+          .json({ data: { wordpressInstalled: true, method: 'readme' } });
       }
     }
 
@@ -48,23 +48,21 @@ const wpCheckHandler = async (req, res) => {
 
     if (wpJsonResponse.ok) {
       const data = await wpJsonResponse.text();
-      const answer = data.includes("wordpress");
+      const answer = data.includes('wordpress');
       if (answer) {
         return res
           .status(200)
-          .json({ wordpressInstalled: true, method: "wp-json" });
+          .json({ data: { wordpressInstalled: true, method: 'wp-json' } });
       }
     }
 
-    res.status(200).json({ wordpressInstalled: false });
+    res.status(200).json({ data: { wordpressInstalled: false } });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({
-        message: "Internal server error. Please try again later",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: 'Internal server error. Please try again later',
+      error: error.message,
+    });
   }
 };
 
